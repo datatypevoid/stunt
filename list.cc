@@ -57,6 +57,9 @@ new_list(int size)
 	}
 
 #ifdef ENABLE_GC
+	if (gc_get_color(emptylist.v.list) != GC_GREEN) {
+	    oklog("gc_get_color(emptylist.v.list) = %d GC_GREEN = %d\n", gc_get_color(emptylist.v.list), GC_GREEN);
+	}
 	assert(gc_get_color(emptylist.v.list) == GC_GREEN);
 #endif
 
