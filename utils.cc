@@ -158,6 +158,7 @@ aux_free(Var v)
     switch ((int) v.type) {
     case TYPE_LIST:
 	myfree(v.v.list, M_LIST);
+	v.v.list = NULL;
 	break;
     case TYPE_MAP:
 	myfree(v.v.tree, M_TREE);
@@ -189,6 +190,7 @@ complex_free_var(Var v)
 	    gc_set_color(v.v.list, GC_BLACK);
 	    if (!gc_is_buffered(v.v.list))
 		myfree(v.v.list, M_LIST);
+		v.v.list = NULL;
 	}
 	else
 	    gc_possible_root(v);

@@ -45,9 +45,10 @@ new_list(int size)
 
     if (size == 0) {
 	static Var emptylist;
+	static Var *ptr_save = NULL;
 
-	if (emptylist.v.list == NULL) {
-	    if ((ptr = (Var *)mymalloc(1 * sizeof(Var), M_LIST)) == NULL)
+	if (emptylist.v.list == NULL && ptr_save == NULL) {
+	    if ((ptr = ptr_save = (Var *)mymalloc(1 * sizeof(Var), M_LIST)) == NULL)
 		panic("EMPTY_LIST: mymalloc failed");
 
 	    emptylist.type = TYPE_LIST;
@@ -55,6 +56,8 @@ new_list(int size)
 	    emptylist.v.list[0].type = TYPE_INT;
 	    emptylist.v.list[0].v.num = 0;
 	}
+
+	assert(ptr_save == emptylist.v.list);
 
 #ifdef ENABLE_GC
 	if (gc_get_color(emptylist.v.list) != GC_GREEN) {
@@ -99,6 +102,7 @@ destroy_list(Var list)
      */
 #ifndef ENABLE_GC
     myfree(list.v.list, M_LIST);
+    list.v.list = NULL;
 #endif
 }
 
