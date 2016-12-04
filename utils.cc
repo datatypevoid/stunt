@@ -188,9 +188,10 @@ complex_free_var(Var v)
 	if (delref(v.v.list) == 0) {
 	    destroy_list(v);
 	    gc_set_color(v.v.list, GC_BLACK);
-	    if (!gc_is_buffered(v.v.list))
+	    if (!gc_is_buffered(v.v.list)) {
 		myfree(v.v.list, M_LIST);
 		v.v.list = NULL;
+	    }
 	}
 	else
 	    gc_possible_root(v);
